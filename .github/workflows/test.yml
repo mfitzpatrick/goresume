@@ -9,18 +9,18 @@ jobs:
     permissions:
       contents: read
 
-      steps:
-        - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-        - uses: actions/setup-go@v5
-          with:
-            go-version: stable
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
 
-        - name: golangci-lint
-          uses: golangci/golangci-lint-action@v8
-          with:
-            version: v2.1
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1
 
-        - name: Run golang tests
-          run: go test
+      - name: Run golang tests
+        run: go test
 
