@@ -158,7 +158,7 @@ func getTemplate(theme string) *bytes.Buffer {
 	themeTemplate := func() string {
 		if _, err := os.Stat(themePath); !errors.Is(err, fs.ErrNotExist) {
 			log.Debug("export", "from", "local", "theme", themePath)
-			template, errTemplate := os.ReadFile(themePath)
+			template, errTemplate := os.ReadFile(themePath) //nolint:gosec
 			check(errTemplate)
 			return string(template)
 		} else {
@@ -187,7 +187,7 @@ func export(_ *cobra.Command, _ []string) {
 		output, errOutput := setOutputFile(viper.GetString("meta.pdf-output"))
 		check(errOutput)
 		log.Info("export", "to", output.Name())
-		defer output.Close()
+		defer func() { _ = output.Close() }()
 		pw, errRun := playwright.Run()
 		check(errRun)
 		browser, errLaunch := pw.Chromium.Launch()
@@ -211,7 +211,7 @@ func export(_ *cobra.Command, _ []string) {
 		output, errOutput := setOutputFile(viper.GetString("meta.html-output"))
 		check(errOutput)
 		log.Info("export", "to", output.Name())
-		defer output.Close()
+		defer func() { _ = output.Close() }()
 		_, errWrite := buf.WriteTo(output)
 		check(errWrite)
 	}
@@ -244,11 +244,12 @@ var templatesFn template.FuncMap = template.FuncMap{
 					return filenames
 				},
 				func(name string) ([]byte, error) {
-					if localesSrc == "local" {
+					switch localesSrc {
+					case "local":
 						return fs.ReadFile(locales, name)
-					} else if localesSrc == "embed" {
+					case "embed":
 						return defaultLocales.ReadFile(name)
-					} else {
+					default:
 						return nil, errors.New("invalid locales source")
 					}
 				},
@@ -275,7 +276,7 @@ func setOutputFile(outputString string) (outputFile *os.File, err error) {
 	if outputString == "-" {
 		outputFile = os.Stdout
 	} else {
-		outputFile, err = os.Create(outputString)
+		outputFile, err = os.Create(outputString) //nolint:gosec
 	}
 	return outputFile, err
 }

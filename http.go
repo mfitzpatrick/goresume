@@ -21,7 +21,7 @@ func (l *HTTPURLLoader) Load(url string) (any, error) {
 		_ = resp.Body.Close()
 		return nil, fmt.Errorf("%s returned status code %d", url, resp.StatusCode)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	return jsonschema.UnmarshalJSON(resp.Body)
 }
