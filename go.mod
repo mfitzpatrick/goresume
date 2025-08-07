@@ -1,4 +1,4 @@
-module github.com/nikaro/goresume
+module github.com/mfitzpatrick/goresume
 
 go 1.23.3
 
