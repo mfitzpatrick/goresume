@@ -4,17 +4,11 @@ Build HTML/PDF resume from JSON/YAML/TOML
 
 ```
 # with Go
-go install github.com/nikaro/goresume@latest
-
-# with Homebrew
-brew install nikaro/tap/goresume
-
-# on ArchLinux from AUR
-yay -S goresume-bin
+go install github.com/mfitzpatrick/goresume@latest
 ```
 
 You can also download one of the binaries or packages from the
-[Releases](https://github.com/nikaro/goresume/releases) page.
+[Releases](https://github.com/mfitzpatrick/goresume/releases) page.
 
 ## Usage
 
